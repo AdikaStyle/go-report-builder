@@ -6,11 +6,15 @@ We've built this tool at Adika to get rid of the cumbersome process of creating 
 to the server side.
   
 ## How
-
+Download using `go get` or via the releases page:  
+`$> go get -u github.com/AdikaStyle/go-report-builder`
 1) Build your template in pure HTML, for example:
 2) Use [go's templating language](https://curtisvermeeren.github.io/2017/09/14/Golang-Templates-Cheatsheet) to template the data of your report.
-3) Start go-report-builder with a reference to the folder containing your templates: `go-report-builder <TEMPLATES PATH>`
-4) Use the API to export your rendered html report to HTML, PDF and PNG. 
+3) Mark your printable area with the id tag `<div id="printable">...</div>`
+4) Set the page size on the body tag
+5) Start go-report-builder with a reference to the folder containing your templates:   
+`$> go-report-builder <TEMPLATES PATH>`
+6) Use the API to export your rendered html report to HTML, PDF and PNG. 
 
 Example of html report:
 ```html

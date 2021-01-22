@@ -68,12 +68,11 @@ const previewTemplate = `
 </head>
 <body>
 
-<div>
-	<h1>go-report-builder</h1>
-	<h2>Preview Tool</h2>
-	
-	<p>Selected Report:</p>
-	<select id="reports">
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center ">
+	<h1 style="text-align: center">Preview Tool</h1>
+
+	<div>
+		<select id="reports">
 		{{- range $c := .Values.reports }}
 			{{- if (eq $c $.Values.reportId) }}
 			<option selected="selected" value="{{ $c }}">{{ $c }}</option>
@@ -81,10 +80,10 @@ const previewTemplate = `
 			<option value="{{ $c }}">{{ $c }}</option>
 			{{- end }}
 		{{- end }}
-	</select>
-	<button onclick="onGenerate()">Generate</button>
-	
-	<p> Data: </p>
+		</select>
+		<button onclick="onGenerate()">Generate</button>
+	</div>
+
 	<div id="jsoneditor" style="width: 600px; height: 400px;"></div>
 	<p>Result:</p>
 	<div style="border: 2px solid; padding: 20px">

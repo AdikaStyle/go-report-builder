@@ -1,14 +1,14 @@
 package models
 
 type PrintOptions struct {
-	PageHeight  string
-	PageWidth   string
-	Orientation PrintOrientation
+	PageHeight  float64          `json:"page_height"`
+	PageWidth   float64          `json:"page_width"`
+	Orientation PrintOrientation `json:"orientation"`
 }
 
-type PrintOrientation int
+type PrintOrientation string
 
 const (
-	Orientation_Landscape = 1
-	Orientation_Portrait  = 2
+	Orientation_Landscape = "landscape"
+	Orientation_Portrait  = "portrait"
 )

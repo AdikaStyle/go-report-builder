@@ -12,5 +12,5 @@ type TemplateRepository interface {
 }
 
 type ReportExporter interface {
-	Export(renderedContent []byte) ([]byte, error)
+	Export(url string) ([]byte, *models.PrintOptions, error)
 }

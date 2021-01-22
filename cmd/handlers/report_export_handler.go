@@ -5,11 +5,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"strings"
 )
 
 func ReportExportHandler(reportService business.ReportService, kind string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		reportId := ctx.Param("reportId")
+		reportId := strings.TrimPrefix(ctx.Param("reportId"), "/")
 		var body interface{}
 		if err := ctx.BindJSON(&body); err != nil {
 			logrus.Error(err)

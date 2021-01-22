@@ -7,13 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"strings"
 )
 
 func ReportPreviewHandler(templateService business.TemplateService,
 	templateEngine data.TemplateEngine,
 	reportService business.ReportService) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		reportId := ctx.Param("reportId")
+		reportId := strings.TrimPrefix(ctx.Param("reportId"), "/")
 		data, err := extractData(ctx)
 		if err != nil {
 			logrus.Error(err)
@@ -95,12 +96,6 @@ const previewTemplate = `
 		const options = {
 			mode: 'code',
 			modes: ['code', 'form', 'text', 'tree', 'view', 'preview'], // allowed modes
-			onError: function (err) {
-			  alert(err.toString())
-			},
-			onModeChange: function (newMode, oldMode) {
-			  console.log('Mode switched from', oldMode, 'to', newMode)
-			}
 	  	}
 		const editor = new JSONEditor(container, options)
 		const initialJson = {{ .Values.data }}

@@ -21,10 +21,9 @@ func (rs *reportService) ExportReportHtml(reportId string, data interface{}) ([]
 		return nil, stacktrace.RootCause(err)
 	}
 
-	var b64Html []byte
-	base64.StdEncoding.Encode(b64Html, html)
+	b64Html := base64.StdEncoding.EncodeToString(html)
 
-	return b64Html, nil
+	return []byte(b64Html), nil
 }
 
 func (rs *reportService) ExportReportPdf(reportId string, data interface{}) ([]byte, error) {
@@ -38,10 +37,9 @@ func (rs *reportService) ExportReportPdf(reportId string, data interface{}) ([]b
 		return nil, stacktrace.RootCause(err)
 	}
 
-	var b64Pdf []byte
-	base64.StdEncoding.Encode(b64Pdf, pdf)
+	b64Pdf := base64.StdEncoding.EncodeToString(pdf)
 
-	return b64Pdf, nil
+	return []byte(b64Pdf), nil
 }
 
 func (rs *reportService) ExportReportPng(reportId string, data interface{}) ([]byte, error) {
@@ -55,10 +53,9 @@ func (rs *reportService) ExportReportPng(reportId string, data interface{}) ([]b
 		return nil, stacktrace.RootCause(err)
 	}
 
-	var b64Png []byte
-	base64.StdEncoding.Encode(b64Png, png)
+	b64Png := base64.StdEncoding.EncodeToString(png)
 
-	return b64Png, nil
+	return []byte(b64Png), nil
 }
 
 func (rs *reportService) buildUrl(reportId string, data interface{}) (string, error) {
@@ -67,10 +64,12 @@ func (rs *reportService) buildUrl(reportId string, data interface{}) (string, er
 		return "", stacktrace.Propagate(err, "failed to marshal %+v to json", data)
 	}
 
-	var b64Data []byte
-	base64.StdEncoding.Encode(b64Data, jsonData)
+	b64Data := base64.StdEncoding.EncodeToString(jsonData)
+	if b64Data == "e30=" {
+		b64Data = ""
+	}
 
-	return fmt.Sprintf("http://%s/reports/%s?d=%s", rs.baseUrl, reportId, b64Data), nil
+	return fmt.Sprintf("http://%s/reports/render/%s?d=%s", rs.baseUrl, reportId, b64Data), nil
 }
 
 func NewReportService(pdf data.ReportExporter, png data.ReportExporter, templateService TemplateService, baseUrl string) *reportService {

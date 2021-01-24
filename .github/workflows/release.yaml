@@ -21,5 +21,4 @@ jobs:
           goarch: ${{ matrix.goarch }}
           project_path: "./"
           binary_name: "go-report-builder"
-          pre_command: "go test ./..."
           extra_files: LICENSE README.md

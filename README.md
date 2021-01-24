@@ -39,6 +39,8 @@ Example of html report:
 ```
 
 ## Example
+Check the examples folder.
+![](docs/example.gif)
 
 ## Api Reference
 
@@ -60,13 +62,13 @@ Example Response:
 ### Render Report
 Will render a report (as HTML) using the provided data.
 
-Url: `GET /reports/render/${reportId}?d=${base64Data}`
+Url: `GET /reports/render/${reportId}?d=${base64Data}`  
 Response: the rendered HTML report.
 
 ### Preview (and debug) Report
 Will open a web page that allows you to debug and test your reports.
 
-Url: `GET /reports/preview/${reportId}?d=${base64Data}`
+Url: `GET /reports/preview/${reportId}?d=${base64Data}`  
 Response: the rendered HTML preview tool.
 ![](docs/preview_tool.png)
 

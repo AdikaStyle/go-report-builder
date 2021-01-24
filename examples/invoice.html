@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body {
+			font-family: 'Ariel', serif;
+			font-size: 10pt;
+			direction: ltr;
+			width: 120mm;
+			height: 150mm;
+		}
+
+		.invoice-container {
+			padding: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			text-align: center;
+		}
+
+		th.small {
+			width: 1%;
+		}
+
+		th.large {
+			width: 20%;
+		}
+	</style>
+	<title>Example - Invoice</title>
+</head>
+<body>
+
+<div class="invoice-container" id="printable">
+	<h2 style="text-align: center">Invoice # <u>{{ .Values.invoiceId }}</u></h2>
+	<table style="width:100%">
+		<thead>
+		<tr>
+			<th class="large">SKU</th>
+			<th class="large">Name</th>
+			<th class="small">No. of Units</th>
+			<th class="small">Net Weight</th>
+			<th class="small">Unit Value</th>
+			<th class="small">Total Value</th>
+		</tr>
+		</thead>
+
+		<tbody>
+        {{- range $i, $item := .Values.lineItems }}
+			<tr>
+				<td>{{ .sku }}</td>
+				<td>{{ .name }}</td>
+				<td>{{ .quantity }}</td>
+				<td>{{ .netWeight }}</td>
+				<td>{{ .unitValue }}</td>
+				<td>{{ .totalValue }}</td>
+			</tr>
+        {{- end }}
+
+		</tbody>
+</div>
+
+</body>
+</html>
+
+{{/*
+Example JSON body:
+{
+  "invoiceId": "SH200992",
+  "lineItems": [
+    {
+      "name": "Large box of gold",
+      "netWeight": "0.1 KG",
+      "quantity": 3,
+      "sku": "A00005454",
+      "totalValue": "30$",
+      "unitValue": "10$"
+    },
+    {
+      "name": "Fresh Air",
+      "netWeight": "0.3 KG",
+      "quantity": 10,
+      "sku": "A0000522354",
+      "totalValue": "150$",
+      "unitValue": "15$"
+    }
+  ]
+}
+
+Or just try:
+http://localhost:8080/reports/preview/invoice?d=eyJpbnZvaWNlSWQiOiJTSDIwMDk5MiIsImxpbmVJdGVtcyI6W3sibmFtZSI6IkxhcmdlIGJveCBvZiBnb2xkIiwibmV0V2VpZ2h0IjoiMC4xIEtHIiwicXVhbnRpdHkiOjMsInNrdSI6IkEwMDAwNTQ1NCIsInRvdGFsVmFsdWUiOiIzMCQiLCJ1bml0VmFsdWUiOiIxMCQifSx7Im5hbWUiOiJGcmVzaCBBaXIiLCJuZXRXZWlnaHQiOiIwLjMgS0ciLCJxdWFudGl0eSI6MTAsInNrdSI6IkEwMDAwNTIyMzU0IiwidG90YWxWYWx1ZSI6IjE1MCQiLCJ1bml0VmFsdWUiOiIxNSQifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifV19
+*/}}

@@ -1,4 +1,4 @@
-# go-report-builder
+# go-report-builder [![Go Report Card](https://goreportcard.com/badge/github.com/AdikaStyle/go-report-builder)](https://goreportcard.com/report/github.com/AdikaStyle/go-report-builder)
 
 ## Why
 In the e-commerce business, you always have need to print labels, invoices and build reports online.  

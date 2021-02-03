@@ -12,7 +12,19 @@ RUN CGO_ENABLED=0 go build \
   -o /app .
 
 FROM alpine:latest
-RUN apk --no-cache add ca-certificates
+
+RUN apk update && apk add --no-cache nmap && \
+    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
+    echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
+    apk update && \
+    apk add --no-cache \
+      ca-certificates \
+      chromium \
+      harfbuzz \
+      "freetype>2.8" \
+      ttf-freefont \
+      nss
+
 COPY --from=builder /app .
 
 RUN mkdir /templates
@@ -22,5 +34,7 @@ ENV RENDER_TIMEOUT="3s"
 ENV SERVER_HOST="localhost"
 ENV SERVER_PORT="8080"
 ENV GIN_MODE="release"
+
+ADD examples /templates
 
 CMD ["./app"]

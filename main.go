@@ -20,7 +20,7 @@ func main() {
 	module := cmd.NewModule(config)
 	logrus.Info("module built successfully")
 
-	logrus.Info("server started at port: %d...", config.ServerPort)
+	logrus.Infof("server started at port: %d...", config.ServerPort)
 	panicOnError(module.Server.Start())
 }
 

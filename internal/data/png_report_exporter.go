@@ -10,17 +10,17 @@ import (
 )
 
 type pngReportExporter struct {
-	timeout time.Duration
+	timeout        time.Duration
+	viewportHeight int
+	viewportWidth  int
 }
 
-func NewPngReportExporter(timeout time.Duration) *pngReportExporter {
-	return &pngReportExporter{timeout: timeout}
+func NewPngReportExporter(timeout time.Duration, vpHeight, vpWidth int) *pngReportExporter {
+	return &pngReportExporter{timeout: timeout, viewportHeight: vpHeight, viewportWidth: vpWidth}
 }
 
 func (pre *pngReportExporter) Export(url string) ([]byte, *models.PrintOptions, error) {
-	baseCtx, to := context.WithTimeout(context.Background(), pre.timeout)
-	ctx, cancel := chromedp.NewContext(baseCtx)
-	defer to()
+	ctx, cancel := createContext(pre.timeout, pre.viewportHeight, pre.viewportWidth)
 	defer cancel()
 
 	var res []byte
@@ -37,6 +37,28 @@ func (pre *pngReportExporter) Export(url string) ([]byte, *models.PrintOptions, 
 	}
 
 	return res, &options, nil
+}
+
+func createContext(timeout time.Duration, vph int, vpw int) (context.Context, context.CancelFunc) {
+	baseCtx, cancelTimeout := context.WithTimeout(context.Background(), timeout)
+
+	opts := []chromedp.ExecAllocatorOption{
+		chromedp.WindowSize(vpw, vph),
+		chromedp.NoFirstRun,
+		chromedp.NoDefaultBrowserCheck,
+		chromedp.Headless,
+		chromedp.DisableGPU,
+	}
+	allocCtx, cancelAlloc := chromedp.NewExecAllocator(baseCtx, opts...)
+	ctx, cancelCtx := chromedp.NewContext(allocCtx)
+
+	cancelFuncs := func() {
+		cancelTimeout()
+		cancelAlloc()
+		cancelCtx()
+	}
+
+	return ctx, cancelFuncs
 }
 
 const extractPrintOptions = `function extractStyles() {

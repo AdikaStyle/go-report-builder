@@ -22,7 +22,7 @@ type Module struct {
 func NewModule(config Config) *Module {
 	engine := data.NewGolangTemplateEngine()
 	repo := data.NewFilesystemTemplateRepo(config.TemplatesPath)
-	png := data.NewPngReportExporter(config.RenderTimeout)
+	png := data.NewPngReportExporter(config.RenderTimeout, config.ViewportHeight, config.ViewportWidth)
 	pdf := data.NewPdfReportExporter(png)
 
 	tmplSrv := business.NewTemplateService(engine, repo)

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body {
+			font-family: 'Ariel', serif;
+			font-size: 12pt;
+			direction: ltr;
+			width: 210mm;
+			height: 297mm;
+		}
+
+		.invoice-container {
+			/*height: 100%;
+			width: 99%;*/
+		}
+
+		.row {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: start;
+		}
+
+		.col {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+		}
+
+		.full-width {
+			width: 100%;
+			min-width: 100%;
+			max-width: 100%;
+		}
+
+		.half-width {
+			width: 50%;
+			min-width: 50%;
+			max-width: 50%;
+		}
+
+		.third-width {
+			width: 33%;
+			min-width: 33%;
+			max-width: 33%;
+		}
+
+		.centered {
+			text-align: center;
+		}
+
+		.block {
+			border: 1px solid black;
+			font-size: 10pt;
+			padding: 5px;
+			line-height: 1.5em;
+		}
+
+		.square {
+			height: 0.5cm;
+			width: 0.5cm;
+			border: 1px solid black;
+			margin-right: 5px;
+		}
+
+		.checked:before {
+			content:'\2713';
+			display:inline-block;
+			color:black;
+			font-size: 16pt;
+			margin-left: 2px;
+		}
+
+		table, th, td {
+			font-size: 10pt;
+			border: 1px solid black;
+			border-collapse: collapse;
+			text-align: center;
+		}
+
+	</style>
+</head>
+
+<body>
+<div id="printable" class="invoice-container col">
+	<h3 class="centered">COMMERCIAL INVOICE</h3>
+	This invoice must be completed in English.
+
+	<div class="row"> <!-- ROW 1 -->
+		<div class="block col" style="flex: 1;"> <!-- LEFT BLOCK -->
+			<span><b>EXPORTER:</b></span>
+			<span><b>TAX ID#:</b></span>
+			<span><b>Contact Name:</b></span>
+			<span><b>Telephone No.:</b></span>
+			<span><b>E-Mail:</b></span>
+			<span><b>Company Name/Address:</b></span>
+			<span><b>Country/Territory:</b></span>
+			<span><b>Parties to transaction:</b></span>
+			<div class="row" style="margin-left: 20px">
+				<span class="square"></span> <b style="margin-right: 50px">Related</b>
+				<span class="square checked"></span> <b>Non-Related</b>
+			</div>
+		</div>
+		<div class="block col" style="flex: 1;"> <!-- RIGHT BLOCK -->
+			<span><b>Ship Date:</b></span>
+			<span><b>Air Waybill No./Tracking No.:</b></span>
+			<div class="row full-width">
+				<div class="col half-width">
+					<span><b>Invoice No.:</b></span>
+					<span><b>Purchase Order No.:</b></span>
+				</div>
+				<div class="col half-width">
+					<span><b>Payment Terms:</b></span>
+					<span><b>Bill of Lading:</b></span>
+				</div>
+			</div>
+			<span><b>Purpose of Shipment:</b></span>
+		</div>
+	</div>
+
+	<div class="row"> <!-- ROW 2 -->
+		<div class="block col" style="flex: 1;"> <!-- LEFT BLOCK -->
+			<span><b>CONSIGNEE:</b></span>
+			<span><b>TAX ID#:</b></span>
+			<span><b>Contact Name:</b></span>
+			<span><b>Telephone No.:</b></span>
+			<span><b>E-Mail:</b></span>
+			<span><b>Company Name/Address:</b></span>
+			<span><b>Country/Territory:</b></span>
+		</div>
+		<div class="block col" style="flex: 1;"> <!-- RIGHT BLOCK -->
+			<b>SOLD TO/IMPORTER (if different from Consignee):</b>
+			<span><span class="square checked"></span> <b>Same as CONSIGNEE:</b></span>
+			<span><b>TAX ID#:</b></span>
+			<span><b>Company Name/Address:</b></span>
+			<span><b>Country/Territory:</b></span>
+		</div>
+	</div>
+
+	<div class="block col"> <!-- ROW 3 -->
+		<div class="row full-width">
+			<b>If there is a designated broker for this shipment, please provide contact information.</b>
+		</div>
+		<div class="row full-width">
+			<span class="third-width"><b>Name of broker:</b></span>
+			<span class="third-width"><b>Tel. No.:</b></span>
+			<span class="third-width"><b>Contact Name:</b></span>
+		</div>
+	</div>
+
+	<div class="block col"> <!-- ROW 4 -->
+		<div class="row full-width">
+			<span style="margin-right: 10px"><b>Duties and Taxes Payable by</b></span>
+			<span class="square"></span> <b style="margin-right: 10px">Exporter</b>
+			<span class="square checked"></span> <b style="margin-right: 10px">Consignee</b>
+			<span class="square"></span> <b style="margin-right: 10px">Other</b>
+			<span style="margin-left: 10px"><b>If other please specify:</b> </span>
+		</div>
+	</div>
+
+	<div class="col"> <!-- ROW 5 -->
+		<table style="width:100%">
+			<thead>
+			<tr>
+				<th style="width: 1%">No. of Packages</th>
+				<th style="width: 1%">No. of Units</th>
+				<th style="width: 1%">Net Weight (LBS/KGS)</th>
+				<th style="width: 1%">Unit of Measure</th>
+				<th style="width: 1%">Description of Goods</th>
+				<th style="width: 1%">Harmonized Tariff Number</th>
+				<th style="width: 1%">Country of Manufacture</th>
+				<th style="width: 1%">Unit Value</th>
+				<th style="width: 1%">Total Value</th>
+			</tr>
+			</thead>
+
+			<tbody>
+
+            {{- range $i, $j := .Sequence 20 }}
+                {{- if lt $i (len $.Values.lineItems) }}
+                    {{- with index $.Values.lineItems $i }}
+						<tr>
+							<td>{{ .quantity }}</td>
+							<td>{{ .quantity }}</td>
+							<td>{{ .netWeight }}</td>
+							<td>EA</td>
+							<td>{{ .description }}</td>
+							<td></td>
+							<td>{{ .origin }}</td>
+							<td>{{ .unitValue }}</td>
+							<td>{{ .totalValue }}</td>
+						</tr>
+                    {{- end }}
+                {{- else }}
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+                {{- end }}
+            {{- end }}
+
+			</tbody>
+
+		</table>
+	</div>
+
+	<div class="row full-width">
+		<div class="col" style="width: 86.2%">
+			<table class="full-width" >
+				<thead>
+				<tr>
+					<th>Total Pkgs</th>
+					<th>No. of Units</th>
+					<th>Total Net Weight</th>
+					<th>Total Gross Weight</th>
+					<th>Terms of Sale</th>
+				</tr>
+				</thead>
+
+				<tbody>
+				<tr>
+					<td>{{ .Values.totalPackages }}</td>
+					<td>{{ .Values.totalUnits }}</td>
+					<td>{{ .Values.totalNetWeight }} KG</td>
+					<td>{{ .Values.totalGrossWeight }} KG</td>
+					<td>DDP</td>
+				</tr>
+				</tbody>
+
+			</table>
+
+			<div class="col block" style="height: 0.8cm">
+				<b>Special Instructions:</b><br>
+			</div>
+
+			<div class="col block" style="height: 1cm">
+				<b>Declaration Statement(s):</b><br>
+			</div>
+
+			<div class="col block" style="height: 0.34cm">
+				<b>I declare that all the information contained in this invoice to be true and correct.</b>
+			</div>
+
+			<div class="col block" style="height: 0.5cm">
+				<b>Originator or Name of Company Representative if the invoice is being completed on behalf of a company or individual:</b>
+			</div>
+		</div>
+
+		<div class="col" >
+			<table style="line-height: 1.5em">
+				<tbody>
+				<tr class="large">
+					<td>Subtotal:</td>
+					<td>{{ .Values.subTotal }}</td>
+				</tr>
+				<tr class="large">
+					<td>Insurance:</td>
+					<td>0.00</td>
+				</tr>
+				<tr class="large">
+					<td>Freight:</td>
+					<td>{{ .Values.freight }}</td>
+				</tr>
+				<tr class="large">
+					<td>Packing:</td>
+					<td>0.00</td>
+				</tr>
+				<tr class="large">
+					<td>Handling:</td>
+					<td>0.00</td>
+				</tr>
+				<tr class="large">
+					<td>Other:</td>
+					<td>0.00</td>
+				</tr>
+				<tr class="large">
+					<td>Invoice Total:</td>
+					<td>{{ .Values.total }}</td>
+				</tr>
+				<tr class="large">
+					<td>Country Code:</td>
+					<td>{{ .Values.countryCode }}</td>
+				</tr>
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+	<div class="block col"> <!-- ROW 3 -->
+		<span><b>Signature/Title/Date:</b></span>
+	</div>
+
+</div>
+</body>
+
+</html>

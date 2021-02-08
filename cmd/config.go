@@ -8,9 +8,12 @@ import (
 
 type Config struct {
 	TemplatesPath string        `env:"TEMPLATES_PATH" envDefault:"cmd/testdata/"`
-	RenderTimeout time.Duration `env:"RENDER_TIMEOUT envDefault:"3s"`
+	RenderTimeout time.Duration `env:"RENDER_TIMEOUT" envDefault:"10s"`
 	ServerHost    string        `env:"SERVER_HOST" envDefault:"localhost"`
 	ServerPort    int           `env:"SERVER_PORT" envDefault:"8080"`
+
+	ViewportHeight int `env:"VIEWPORT_HEIGHT" envDefault:"2048"`
+	ViewportWidth  int `env:"VIEWPORT_WIDTH" envDefault:"1920"`
 }
 
 func (config Config) BaseUrl() string {

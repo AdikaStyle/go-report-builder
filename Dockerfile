@@ -30,7 +30,7 @@ COPY --from=builder /app .
 RUN mkdir /templates
 
 ENV TEMPLATES_PATH="/templates"
-ENV RENDER_TIMEOUT="3s"
+ENV RENDER_TIMEOUT="5s"
 ENV SERVER_HOST="localhost"
 ENV SERVER_PORT="8080"
 ENV GIN_MODE="release"

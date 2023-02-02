@@ -20,7 +20,7 @@ func NewPdfReportExporter(timeout time.Duration) *pdfReportExporter {
 	return &pdfReportExporter{timeout: timeout}
 }
 
-func (pre *pdfReportExporter) Export(htmlContent string) ([]byte, *models.PrintOptions, error) {
+func (pre *pdfReportExporter) Export(url string, renderedTemplate []byte) ([]byte, *models.PrintOptions, error) {
 	err := playwright.Install()
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not install playwright dependencies (Chromium): %w", err)
@@ -44,7 +44,7 @@ func (pre *pdfReportExporter) Export(htmlContent string) ([]byte, *models.PrintO
 	if err != nil {
 		return nil, nil, err
 	}
-	err = page.SetContent(htmlContent)
+	err = page.SetContent(string(renderedTemplate))
 	if err != nil {
 		return nil, nil, err
 	}

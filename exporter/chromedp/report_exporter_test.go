@@ -14,7 +14,7 @@ import (
 
 func TestPngReportExporter_Export_PrintableNotFound(t *testing.T) {
 	ts := NewPngReportExporter(1*time.Second, 2000, 1920)
-	png, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/subfolder/report2.html", testPort))
+	png, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/subfolder/report2.html", testPort), nil)
 	assert.NotNil(t, err)
 	assert.Nil(t, png)
 	assert.EqualValues(t, "context deadline exceeded", err.Error())
@@ -22,7 +22,7 @@ func TestPngReportExporter_Export_PrintableNotFound(t *testing.T) {
 
 func TestPngReportExporter_Export_PrintableFound(t *testing.T) {
 	ts := NewPngReportExporter(2*time.Second, 2000, 1920)
-	png, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/report1.html", testPort))
+	png, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/report1.html", testPort), nil)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, png)
 
@@ -32,7 +32,7 @@ func TestPngReportExporter_Export_PrintableFound(t *testing.T) {
 
 func TestPdfReportExporter_Export_PrintableNotFound(t *testing.T) {
 	ts := NewPdfReportExporter(1*time.Second, 2000, 1920)
-	png, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/subfolder/report2.html", testPort))
+	png, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/subfolder/report2.html", testPort), nil)
 	assert.NotNil(t, err)
 	assert.Nil(t, png)
 	assert.Contains(t, err.Error(), "Caused by: context deadline exceeded")
@@ -40,7 +40,7 @@ func TestPdfReportExporter_Export_PrintableNotFound(t *testing.T) {
 
 func TestPdfReportExporter_Export_PrintableFound(t *testing.T) {
 	ts := NewPdfReportExporter(1*time.Second, 2000, 1920)
-	pdf, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/report1.html", testPort))
+	pdf, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/report1.html", testPort), nil)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, pdf)
 

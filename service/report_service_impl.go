@@ -32,8 +32,11 @@ func (rs *reportService) ExportReportPdf(reportId string, data interface{}) ([]b
 	if err != nil {
 		return nil, stacktrace.Propagate(err, "failed to build url for pdf export on reportId: %s and data: %+v", reportId, data)
 	}
-
-	pdf, _, err := rs.pdf.Export(url)
+	html, err := rs.templateService.RenderTemplate(reportId, data)
+	if err != nil {
+		return nil, stacktrace.RootCause(err)
+	}
+	pdf, _, err := rs.pdf.Export(url, html)
 	if err != nil {
 		return nil, stacktrace.RootCause(err)
 	}
@@ -49,7 +52,7 @@ func (rs *reportService) ExportReportPng(reportId string, data interface{}) ([]b
 		return nil, stacktrace.Propagate(err, "failed to build url for pdf export on reportId: %s and data: %+v", reportId, data)
 	}
 
-	png, _, err := rs.png.Export(url)
+	png, _, err := rs.png.Export(url, nil) // TODO: replace nil with rendered html
 	if err != nil {
 		return nil, stacktrace.RootCause(err)
 	}

@@ -20,7 +20,7 @@ func NewPngReportExporter(timeout time.Duration, vpHeight, vpWidth int) *pngRepo
 	return &pngReportExporter{timeout: timeout, viewportHeight: vpHeight, viewportWidth: vpWidth}
 }
 
-func (pre *pngReportExporter) Export(url string) ([]byte, *models.PrintOptions, error) {
+func (pre *pngReportExporter) Export(url string, renderedContent []byte) ([]byte, *models.PrintOptions, error) {
 	ctx, cancel := createContext(pre.timeout, pre.viewportHeight, pre.viewportWidth)
 	defer cancel()
 

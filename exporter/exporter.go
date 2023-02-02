@@ -9,7 +9,7 @@ import (
 )
 
 type ReportExporter interface {
-	Export(url string) ([]byte, *models.PrintOptions, error)
+	Export(url string, renderedTemplate []byte) ([]byte, *models.PrintOptions, error)
 }
 
 func NewChromePNGReportExporter(timeout time.Duration, vpHeight, vpWidth int) ReportExporter {

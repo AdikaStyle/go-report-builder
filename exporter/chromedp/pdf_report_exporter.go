@@ -1,6 +1,8 @@
-package exporter
+package chromedp
 
 import (
+	"time"
+
 	"github.com/nndi-oss/greypot/models"
 	"github.com/palantir/stacktrace"
 	"github.com/signintech/gopdf"
@@ -10,8 +12,8 @@ type pdfReportExporter struct {
 	png *pngReportExporter
 }
 
-func NewPdfReportExporter(png *pngReportExporter) *pdfReportExporter {
-	return &pdfReportExporter{png: png}
+func NewPdfReportExporter(timeout time.Duration, vpHeight, vpWidth int) *pdfReportExporter {
+	return &pdfReportExporter{png: NewPngReportExporter(timeout, vpHeight, vpWidth)}
 }
 
 func (pre *pdfReportExporter) Export(url string) ([]byte, *models.PrintOptions, error) {

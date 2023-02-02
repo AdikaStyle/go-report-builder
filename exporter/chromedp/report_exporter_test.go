@@ -1,4 +1,4 @@
-package exporter
+package chromedp
 
 import (
 	"fmt"
@@ -31,7 +31,7 @@ func TestPngReportExporter_Export_PrintableFound(t *testing.T) {
 }
 
 func TestPdfReportExporter_Export_PrintableNotFound(t *testing.T) {
-	ts := NewPdfReportExporter(NewPngReportExporter(1*time.Second, 2000, 1920))
+	ts := NewPdfReportExporter(1*time.Second, 2000, 1920)
 	png, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/subfolder/report2.html", testPort))
 	assert.NotNil(t, err)
 	assert.Nil(t, png)
@@ -39,7 +39,7 @@ func TestPdfReportExporter_Export_PrintableNotFound(t *testing.T) {
 }
 
 func TestPdfReportExporter_Export_PrintableFound(t *testing.T) {
-	ts := NewPdfReportExporter(NewPngReportExporter(1*time.Second, 2000, 1920))
+	ts := NewPdfReportExporter(1*time.Second, 2000, 1920)
 	pdf, _, err := ts.Export(fmt.Sprintf("http://localhost:%d/report1.html", testPort))
 	assert.Nil(t, err)
 	assert.NotEmpty(t, pdf)

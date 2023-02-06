@@ -22,3 +22,7 @@ func NewChromePDFReportExporter(timeout time.Duration, vpHeight, vpWidth int) Re
 func NewPlaywrightPDFReportExporter(timeout time.Duration, vpHeight, vpWidth int) ReportExporter {
 	return pw.NewPdfReportExporter(timeout)
 }
+
+func NewPlaywrightPNGReportExporter(timeout time.Duration, vpHeight, vpWidth int) ReportExporter {
+	return pw.NewPngReportExporter(timeout)
+}

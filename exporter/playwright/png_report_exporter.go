@@ -8,17 +8,17 @@ import (
 	"github.com/playwright-community/playwright-go"
 )
 
-type pdfReportExporter struct {
+type pngReportExporter struct {
 	timeout time.Duration
 	// viewportHeight int
 	// viewportWidth  int
 }
 
-func NewPdfReportExporter(timeout time.Duration) *pdfReportExporter {
-	return &pdfReportExporter{timeout: timeout}
+func NewPngReportExporter(timeout time.Duration) *pngReportExporter {
+	return &pngReportExporter{timeout: timeout}
 }
 
-func (pre *pdfReportExporter) Export(url string, renderedTemplate []byte) ([]byte, *models.PrintOptions, error) {
+func (pre *pngReportExporter) Export(url string, renderedTemplate []byte) ([]byte, *models.PrintOptions, error) {
 
 	pw, err := playwright.Run()
 	if err != nil {
@@ -38,17 +38,19 @@ func (pre *pdfReportExporter) Export(url string, renderedTemplate []byte) ([]byt
 	if err != nil {
 		return nil, nil, err
 	}
+
 	err = page.SetContent(string(renderedTemplate))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	data, err := page.PDF(playwright.PagePdfOptions{
+	data, err := page.Screenshot(playwright.PageScreenshotOptions{
 		// Path: TODO(zikani03): Add option to save file to disk?
+		FullPage:   playwright.Bool(true),
+		Animations: playwright.ScreenshotAnimationsDisabled,
 	})
-
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("could not create screenshot: %v", err)
 	}
 
 	defer browser.Close()

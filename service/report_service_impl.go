@@ -51,8 +51,11 @@ func (rs *reportService) ExportReportPng(reportId string, data interface{}) ([]b
 	if err != nil {
 		return nil, stacktrace.Propagate(err, "failed to build url for pdf export on reportId: %s and data: %+v", reportId, data)
 	}
-
-	png, _, err := rs.png.Export(url, nil) // TODO: replace nil with rendered html
+	html, err := rs.templateService.RenderTemplate(reportId, data)
+	if err != nil {
+		return nil, stacktrace.RootCause(err)
+	}
+	png, _, err := rs.png.Export(url, html)
 	if err != nil {
 		return nil, stacktrace.RootCause(err)
 	}

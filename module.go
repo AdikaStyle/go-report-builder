@@ -67,7 +67,7 @@ func NewPlaywrightModule(renderTimeout time.Duration, repo repo.TemplateReposito
 
 	engine := engine.NewGolangTemplateEngine()
 	// repo := data.NewFilesystemTemplateRepo(config.TemplatesPath)
-	png := exporter.NewChromePNGReportExporter(realRenderTimeout, viewportHeight, viewportWidth)
+	png := exporter.NewPlaywrightPNGReportExporter(realRenderTimeout, viewportHeight, viewportWidth)
 	pdf := exporter.NewPlaywrightPDFReportExporter(realRenderTimeout, viewportHeight, viewportWidth)
 
 	tmplSrv := service.NewTemplateService(engine, repo)

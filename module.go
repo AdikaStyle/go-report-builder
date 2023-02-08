@@ -83,6 +83,38 @@ func NewPlaywrightModule(renderTimeout time.Duration, repo repo.TemplateReposito
 	}
 }
 
+func NewPlaywrightModuleWithCustomEngine(renderTimeout time.Duration, repo repo.TemplateRepository, templateEngine engine.TemplateEngine) *Module {
+	err := playwright.Install()
+	if err != nil {
+		panic(fmt.Errorf("could not install playwright dependencies (Chromium): %w", err))
+	}
+
+	var realRenderTimeout time.Duration
+	if renderTimeout == 0 {
+		realRenderTimeout = 10 * time.Second
+	} else {
+		realRenderTimeout = renderTimeout
+	}
+	var viewportHeight int = 2048 // `env:"VIEWPORT_HEIGHT" envDefault:"2048"`
+	var viewportWidth int = 1920  // `env:"VIEWPORT_WIDTH" envDefault:"1920"`
+
+	// repo := data.NewFilesystemTemplateRepo(config.TemplatesPath)
+	png := exporter.NewPlaywrightPNGReportExporter(realRenderTimeout, viewportHeight, viewportWidth)
+	pdf := exporter.NewPlaywrightPDFReportExporter(realRenderTimeout, viewportHeight, viewportWidth)
+
+	tmplSrv := service.NewTemplateService(templateEngine, repo)
+	rprtSrv := service.NewReportService(pdf, png, tmplSrv, "/" /* TODO: remove baseURL param?*/)
+
+	return &Module{
+		TemplateService:    tmplSrv,
+		ReportService:      rprtSrv,
+		TemplateEngine:     templateEngine,
+		TemplateRepository: repo,
+		PDFExporter:        pdf,
+		PNGExporter:        png,
+	}
+}
+
 func NewFSTemplateRepo(templatesFolder fs.FS) repo.TemplateRepository {
 	return repo.NewFSTemplateRepo(templatesFolder)
 }

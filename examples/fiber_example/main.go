@@ -19,11 +19,25 @@ var templatesFS embed.FS
 func main() {
 	app := fiber.New()
 
-	eng := engine.NewPongo2TemplateEngine()
+	module := greypot.NewModule(
+		greypot.WithRenderTimeout(10*time.Second),
+		greypot.WithViewport(2048, 1920),
+		greypot.WithTemplateEngine(engine.NewDjangoTemplateEngine()),
+		greypot.WithTemplatesFromFilesytem("./templates/"),
+		greypot.WithPlaywrightRenderer(),
+	)
 
-	greypotModule := greypot.NewPlaywrightModuleWithCustomEngine(10*time.Second, greypot.NewFSTemplateRepo(templatesFS), eng)
+	greypotFiber.Use(app, module)
 
-	greypotFiber.Use(app, greypotModule)
+	embedModule := greypot.NewModule(
+		greypot.WithRenderTimeout(10*time.Second),
+		greypot.WithViewport(2048, 1920),
+		greypot.WithTemplateEngine(engine.NewGolangTemplateEngine()),
+		greypot.WithTemplatesFromFS(templatesFS),
+		greypot.WithPlaywrightRenderer(),
+	)
+
+	greypotFiber.Use(app.Group("/embedded/"), embedModule)
 
 	app.Listen(":3000")
 }

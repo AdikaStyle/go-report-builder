@@ -55,6 +55,18 @@ func WithTemplateEngine(e engine.TemplateEngine) GreypotOption {
 	}
 }
 
+func WithGolangTemplateEngine() GreypotOption {
+	return func(m *Module) {
+		m.TemplateEngine = engine.NewGolangTemplateEngine()
+	}
+}
+
+func WithDjangoTemplateEngine() GreypotOption {
+	return func(m *Module) {
+		m.TemplateEngine = engine.NewDjangoTemplateEngine()
+	}
+}
+
 func WithPlaywrightRenderer(options ...*playwright.RunOptions) GreypotOption {
 
 	return func(m *Module) {

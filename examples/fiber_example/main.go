@@ -10,7 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/nndi-oss/greypot"
 	greypotFiber "github.com/nndi-oss/greypot/http/fiber"
-	"github.com/nndi-oss/greypot/template/engine"
 )
 
 //go:embed "templates"
@@ -22,7 +21,7 @@ func main() {
 	module := greypot.NewModule(
 		greypot.WithRenderTimeout(10*time.Second),
 		greypot.WithViewport(2048, 1920),
-		greypot.WithTemplateEngine(engine.NewDjangoTemplateEngine()),
+		greypot.WithDjangoTemplateEngine(),
 		greypot.WithTemplatesFromFilesytem("./templates/"),
 		greypot.WithPlaywrightRenderer(),
 	)
@@ -32,8 +31,8 @@ func main() {
 	embedModule := greypot.NewModule(
 		greypot.WithRenderTimeout(10*time.Second),
 		greypot.WithViewport(2048, 1920),
-		greypot.WithTemplateEngine(engine.NewGolangTemplateEngine()),
 		greypot.WithTemplatesFromFS(templatesFS),
+		greypot.WithGolangTemplateEngine(),
 		greypot.WithPlaywrightRenderer(),
 	)
 

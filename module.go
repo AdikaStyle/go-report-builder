@@ -58,3 +58,15 @@ func NewFSTemplateRepo(templatesFolder fs.FS) repo.TemplateRepository {
 func NewFilesystemRepo(templatesFolder string) repo.TemplateRepository {
 	return repo.NewFilesystemTemplateRepo(templatesFolder)
 }
+
+func NewGolangTemplateEngine() engine.TemplateEngine {
+	return engine.NewGolangTemplateEngine()
+}
+
+func NewPongo2TemplateEngine() engine.TemplateEngine {
+	return engine.NewDjangoTemplateEngine()
+}
+
+func NewDjangoTemplateEngine() engine.TemplateEngine {
+	return engine.NewDjangoTemplateEngine()
+}

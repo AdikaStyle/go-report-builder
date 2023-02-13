@@ -66,13 +66,24 @@ func main() {
 	module := greypot.NewModule(
 		greypot.WithRenderTimeout(10*time.Second),
 		greypot.WithViewport(2048, 1920),
-		greypot.WithTemplateEngine(engine.NewDjangoTemplateEngine()),
-		greypot.WithTemplatesRepository(greypot.NewFilesystemRepo("./templates/")),
+		greypot.WithDjangoTemplateEngine(),
+		greypot.WithTemplatesFromFilesystem("./templates/"),
 		greypot.WithPlaywrightRenderer(),
 	)
 
-	greypotFiber.Use(app.Group("/api"), module)
+	greypotFiber.Use(app, module)
+
+	embedModule := greypot.NewModule(
+		greypot.WithRenderTimeout(10*time.Second),
+		greypot.WithViewport(2048, 1920),
+		greypot.WithTemplatesFromFS(templatesFS),
+		greypot.WithGolangTemplateEngine(),
+		greypot.WithPlaywrightRenderer(),
+	)
+
+	greypotFiber.Use(app.Group("/embedded/"), embedModule)
 
 	app.Listen(":3000")
 }
+
 ```

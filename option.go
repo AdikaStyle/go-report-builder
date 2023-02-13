@@ -96,7 +96,7 @@ func WithTemplatesFromFS(dir fs.FS) GreypotOption {
 	}
 }
 
-func WithTemplatesFromFilesytem(dir string) GreypotOption {
+func WithTemplatesFromFilesystem(dir string) GreypotOption {
 	return func(m *Module) {
 		m.TemplateRepository = repo.NewFilesystemTemplateRepo(dir)
 	}

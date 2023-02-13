@@ -22,7 +22,7 @@ func main() {
 		greypot.WithRenderTimeout(10*time.Second),
 		greypot.WithViewport(2048, 1920),
 		greypot.WithDjangoTemplateEngine(),
-		greypot.WithTemplatesFromFilesytem("./templates/"),
+		greypot.WithTemplatesFromFilesystem("./templates/"),
 		greypot.WithPlaywrightRenderer(),
 	)
 

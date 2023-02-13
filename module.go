@@ -118,3 +118,7 @@ func NewPlaywrightModuleWithCustomEngine(renderTimeout time.Duration, repo repo.
 func NewFSTemplateRepo(templatesFolder fs.FS) repo.TemplateRepository {
 	return repo.NewFSTemplateRepo(templatesFolder)
 }
+
+func NewFilesystemRepo(templatesFolder string) repo.TemplateRepository {
+	return repo.NewFilesystemTemplateRepo(templatesFolder)
+}

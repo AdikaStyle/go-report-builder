@@ -15,6 +15,7 @@ type ReportExporter interface {
 func NewChromePNGReportExporter(timeout time.Duration, vpHeight, vpWidth int) ReportExporter {
 	return cd.NewPngReportExporter(timeout, vpHeight, vpWidth)
 }
+
 func NewChromePDFReportExporter(timeout time.Duration, vpHeight, vpWidth int) ReportExporter {
 	return cd.NewPdfReportExporter(timeout, vpHeight, vpWidth)
 }

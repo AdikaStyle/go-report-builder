@@ -19,7 +19,6 @@ func NewPdfReportExporter(timeout time.Duration) *pdfReportExporter {
 }
 
 func (pre *pdfReportExporter) Export(url string, renderedTemplate []byte) ([]byte, *models.PrintOptions, error) {
-
 	pw, err := playwright.Run()
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not launch playwright: %w", err)
@@ -46,7 +45,6 @@ func (pre *pdfReportExporter) Export(url string, renderedTemplate []byte) ([]byt
 	data, err := page.PDF(playwright.PagePdfOptions{
 		// Path: TODO(zikani03): Add option to save file to disk?
 	})
-
 	if err != nil {
 		return nil, nil, err
 	}

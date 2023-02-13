@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/palantir/stacktrace"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/palantir/stacktrace"
 )
 
 type ExportType string

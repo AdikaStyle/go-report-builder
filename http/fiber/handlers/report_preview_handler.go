@@ -13,7 +13,8 @@ import (
 
 func ReportPreviewHandler(templateService service.TemplateService,
 	templateEngine engine.TemplateEngine,
-	reportService service.ReportService) func(ctx *fiber.Ctx) error {
+	reportService service.ReportService,
+) func(ctx *fiber.Ctx) error {
 	return func(ctx *fiber.Ctx) error {
 		reportId := strings.TrimPrefix(ctx.Params("*"), "/")
 		data, err := extractData(ctx)

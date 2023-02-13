@@ -13,7 +13,8 @@ import (
 
 func ReportPreviewHandler(templateService service.TemplateService,
 	templateEngine engine.TemplateEngine,
-	reportService service.ReportService) gin.HandlerFunc {
+	reportService service.ReportService,
+) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		reportId := strings.TrimPrefix(ctx.Param("reportId"), "/")
 		data, err := extractData(ctx)

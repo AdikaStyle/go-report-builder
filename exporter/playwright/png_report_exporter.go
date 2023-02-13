@@ -19,7 +19,6 @@ func NewPngReportExporter(timeout time.Duration) *pngReportExporter {
 }
 
 func (pre *pngReportExporter) Export(url string, renderedTemplate []byte) ([]byte, *models.PrintOptions, error) {
-
 	pw, err := playwright.Run()
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not launch playwright: %w", err)

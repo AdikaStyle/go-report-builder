@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/base64"
 	"encoding/json"
+
 	"github.com/gin-gonic/gin"
 	"github.com/palantir/stacktrace"
 )

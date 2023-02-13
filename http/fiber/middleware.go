@@ -6,18 +6,7 @@ import (
 	"github.com/nndi-oss/greypot/http/fiber/handlers"
 )
 
-// type Server struct {
-// 	config          Config
-// 	templateService business.TemplateService
-// 	reportService   business.ReportService
-// 	templateEngine  data.TemplateEngine
-// }
-
-// func NewServer(config Config, templateService business.TemplateService, engine data.TemplateEngine, reportService business.ReportService) *Server {
-// 	return &Server{config: config, templateService: templateService, reportService: reportService, templateEngine: engine}
-// }s
-
-func Use(app *fiber.App, s *greypot.Module) {
+func Use(app fiber.Router, s *greypot.Module) {
 	app.Get("/reports/list", handlers.ReportListHandler(s.TemplateService))
 	app.Get("/reports/preview/*", handlers.ReportPreviewHandler(s.TemplateService, s.TemplateEngine, s.ReportService))
 	app.Get("/reports/render/*", handlers.ReportRenderHandlder(s.TemplateService))

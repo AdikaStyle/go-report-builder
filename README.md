@@ -63,9 +63,15 @@ var templatesFS embed.FS
 func main() {
 	app := fiber.New()
 
-	greypotModule := greypot.NewPlaywrightModule(10*time.Second, greypot.NewFSTemplateRepo(templatesFS))
+	module := greypot.NewModule(
+		greypot.WithRenderTimeout(10*time.Second),
+		greypot.WithViewport(2048, 1920),
+		greypot.WithTemplateEngine(engine.NewDjangoTemplateEngine()),
+		greypot.WithTemplatesRepository(greypot.NewFilesystemRepo("./templates/")),
+		greypot.WithPlaywrightRenderer(),
+	)
 
-	greypotFiber.Use(app, greypotModule)
+	greypotFiber.Use(app.Group("/api"), module)
 
 	app.Listen(":3000")
 }

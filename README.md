@@ -7,7 +7,7 @@ Very much WIP.
 ## What does it do?
 
 Say you want to produce reports or other such type of documents in your applications. 
-`greypot` allows you to design your reports with HTML as template files that use the standard Go `html/template` templating engine.
+`greypot` allows you to design your reports with HTML as template files that use the standard Go `html/template` or a Django-like templating engine.
 
 These HTML reports can then be generated as HTML, PNG or PDF via endpoints that greypot adds to your application.
 
@@ -32,7 +32,7 @@ You can then call these from within your applications to generate/export the rep
 
 ## Playwright Module
 
-Currently, we are focusing on making the playwright based renderer work really good! The base project used Chrome Developer Protocol to connect with a Chromium instance. We are evaluating that decision [here](https://github.com/nndi-oss/greypot/issues/1)
+Currently, we are focusing on making the playwright based renderer work really good! The base project used Chrome Developer Protocol to connect with a Chromium instance. We [decided](https://github.com/nndi-oss/greypot/issues/1) to remove support for that.
 
 In order to use the [Playwright](https://github.com/playwright-community/playwright-go) rendering functionality, you will need to have the [playwright dependencies](https://playwright.dev/docs/cli#install-system-dependencies) installed.
 
@@ -85,5 +85,6 @@ func main() {
 
 	app.Listen(":3000")
 }
-
 ```
+
+

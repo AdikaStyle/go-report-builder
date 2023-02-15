@@ -81,15 +81,6 @@ func WithPlaywrightRenderer(options ...*playwright.RunOptions) GreypotOption {
 	}
 }
 
-func WithChromeDPRenderer(url string) GreypotOption {
-	return func(m *Module) {
-		png := exporter.NewChromePNGReportExporter(m.RenderTimeout, m.ViewportHeight, m.ViewportWidth)
-		pdf := exporter.NewChromePDFReportExporter(m.RenderTimeout, m.ViewportHeight, m.ViewportWidth)
-		m.PNGExporter = png
-		m.PDFExporter = pdf
-	}
-}
-
 func WithTemplatesFromFS(dir fs.FS) GreypotOption {
 	return func(m *Module) {
 		m.TemplateRepository = repo.NewFSTemplateRepo(dir)

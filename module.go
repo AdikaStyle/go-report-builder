@@ -26,16 +26,6 @@ type Module struct {
 	PNGExporter        exporter.ReportExporter
 }
 
-func NewChromeDPModule(renderTimeout time.Duration, repo repo.TemplateRepository) *Module {
-	return NewModule(
-		WithRenderTimeout(renderTimeout),
-		WithViewport(2048, 1920),
-		WithTemplateEngine(engine.NewGolangTemplateEngine()),
-		WithTemplatesRepository(repo),
-		WithChromeDPRenderer("localhost"),
-	)
-}
-
 func NewPlaywrightModule(renderTimeout time.Duration, repo repo.TemplateRepository) *Module {
 	err := playwright.Install()
 	if err != nil {
@@ -47,7 +37,7 @@ func NewPlaywrightModule(renderTimeout time.Duration, repo repo.TemplateReposito
 		WithViewport(2048, 1920),
 		WithTemplateEngine(engine.NewGolangTemplateEngine()),
 		WithTemplatesRepository(repo),
-		WithChromeDPRenderer("localhost"),
+		WithPlaywrightRenderer(),
 	)
 }
 

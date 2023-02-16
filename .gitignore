@@ -250,3 +250,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+/build/
+/dist/

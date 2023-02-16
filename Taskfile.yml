@@ -1,0 +1,16 @@
+version: 3
+tasks:
+
+  build-ui:
+    cmds:
+     - cd ui && npm run build
+
+  build-server:
+    deps: [ build-ui ]
+    cmds:
+      - go build -o ./bin/greypot-server cmd/greypot-server/*.go
+
+  run:
+    deps: [ build-server ]
+    cmds:
+      - ./bin/greypot-server -templates "examples/fiber_example/templates"

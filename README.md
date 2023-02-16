@@ -42,6 +42,16 @@ Read [here](https://playwright.dev/docs/cli#install-system-dependencies) for mor
 $ npx playwright install-deps chromium
 ```
 
+### Docker Usage
+
+```sh
+$ docker build -t greypot-server
+
+$ docker run -p "7665:7665" -v "$(pwd)/examples/fiber_example/templates:/templates" greypot-server
+```
+
+
+
 ### Basic Fiber example
 
 

@@ -2,11 +2,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/fs"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"time"
@@ -19,7 +21,8 @@ import (
 )
 
 var templateDir string
-var address string
+var host string
+var port int
 var disableStudioUI bool = false
 
 type UploadTemplateRequest struct {
@@ -29,7 +32,8 @@ type UploadTemplateRequest struct {
 
 func init() {
 	flag.StringVar(&templateDir, "templates", "./templates/", "Path to the directory with templates")
-	flag.StringVar(&address, "listen", "localhost:7665", "Listen address for server")
+	flag.StringVar(&host, "host", "0.0.0.0", "Host for server")
+	flag.IntVar(&port, "port", 0, "Port for server (defaults to reading from $PORT or fallback to 7665)")
 	flag.BoolVar(&disableStudioUI, "disable-studio", false, "Disable the studio UI")
 }
 
@@ -69,10 +73,23 @@ func main() {
 		log.Fatalf("Did not find any HTML template files in %s", templateDir)
 	}
 
-	if address == "" {
-		address := os.Getenv("GREYPOT_ADDRESS")
+	if host == "" {
+		address := os.Getenv("GREYPOT_HOST")
 		if address == "" {
-			address = "localhost:7665"
+			address = "0.0.0.0"
+		}
+	}
+
+	if port == 0 {
+		envPort := os.Getenv("PORT")
+		if envPort == "" {
+			port = 7665
+		} else {
+			if parsedPort, err := strconv.Atoi(envPort); err != nil {
+				port = 7665
+			} else {
+				port = parsedPort
+			}
 		}
 	}
 
@@ -137,8 +154,8 @@ func main() {
 		}))
 	}
 
-	err = app.Listen(address)
+	err = app.Listen(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
-		log.Fatalf("failed to start server at %s got %v", address, err)
+		log.Fatalf("failed to start server at %s:%d got %v", host, port, err)
 	}
 }

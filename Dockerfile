@@ -54,7 +54,7 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
     # smoke tests
     && node --version \
     && npm --version \
-    && npx playwright --with-deps chromium \
+    && npx playwright install --with-deps chromium \
 	&& url= \
 	&& case "${dpkgArch##*-}" in \
 		amd64) \
@@ -74,7 +74,8 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
     && wget -O /go.tgz "$url" --no-check-certificate \
     && rm -rf /usr/local/go \ 
     && tar -C /usr/local -xzf /go.tgz \
-    && rm /go.tgz 
+    && rm /go.tgz
+    # && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 
 WORKDIR /greypot
@@ -85,6 +86,7 @@ RUN cd /greypot/ui \
     && npm run build \
     && cd /greypot/cmd/greypot-server \
     && go build -o /bin/greypot-server 
+
 
 ENV PORT 7665
 EXPOSE 7665

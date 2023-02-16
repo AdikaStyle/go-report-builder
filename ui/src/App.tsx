@@ -34,7 +34,7 @@ function App() {
       Content: templateCode
     }
 
-    let response = await fetch("/upload-template", {
+    let response = await fetch("/_studio/upload-template", {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -50,7 +50,7 @@ function App() {
 
     if (response.ok) {
       let testDataJSON = JSON.parse(dataCode)
-      let response = await fetch(`/reports/export/pdf/${templateRequest.Name}`, {
+      let response = await fetch(`/_studio/reports/export/pdf/${templateRequest.Name}`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -121,7 +121,7 @@ function App() {
           />
         </div>
       </div>
-      
+
       <div className="action-area p-3">
         <a style={{ display: 'none'}} ref={downloadRef} download={downloadName}></a>
         <Button label="PDF Preview with Test Data" onClick={uploadAndRenderPDF} />

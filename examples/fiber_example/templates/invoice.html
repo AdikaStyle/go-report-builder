@@ -36,7 +36,7 @@
 <body>
 
 <div class="invoice-container" id="printable">
-	<h2 style="text-align: center">Invoice # <u>{{ .Values.invoiceId }}</u></h2>
+	<h2 style="text-align: center">Invoice # <u>{{ invoiceId }}</u></h2>
 	<table style="width:100%">
 		<thead>
 		<tr>
@@ -50,24 +50,23 @@
 		</thead>
 
 		<tbody>
-        {{- range $i, $item := .Values.lineItems }}
+			{% for l in lineItems %}
 			<tr>
-				<td>{{ .sku }}</td>
-				<td>{{ .name }}</td>
-				<td>{{ .quantity }}</td>
-				<td>{{ .netWeight }}</td>
-				<td>{{ .unitValue }}</td>
-				<td>{{ .totalValue }}</td>
+				<td>{{ l.sku }}</td>
+				<td>{{ l.name }}</td>
+				<td>{{ l.quantity }}</td>
+				<td>{{ l.netWeight }}</td>
+				<td>{{ l.unitValue }}</td>
+				<td>{{ l.totalValue }}</td>
 			</tr>
-        {{- end }}
-
+			{% endfor %}
 		</tbody>
 </div>
 
 </body>
 </html>
-
-{{/*
+<!--
+/*
 Example JSON body:
 {
   "invoiceId": "SH200992",
@@ -93,4 +92,4 @@ Example JSON body:
 
 Or just try:
 http://localhost:8080/reports/preview/invoice?d=eyJpbnZvaWNlSWQiOiJTSDIwMDk5MiIsImxpbmVJdGVtcyI6W3sibmFtZSI6IkxhcmdlIGJveCBvZiBnb2xkIiwibmV0V2VpZ2h0IjoiMC4xIEtHIiwicXVhbnRpdHkiOjMsInNrdSI6IkEwMDAwNTQ1NCIsInRvdGFsVmFsdWUiOiIzMCQiLCJ1bml0VmFsdWUiOiIxMCQifSx7Im5hbWUiOiJGcmVzaCBBaXIiLCJuZXRXZWlnaHQiOiIwLjMgS0ciLCJxdWFudGl0eSI6MTAsInNrdSI6IkEwMDAwNTIyMzU0IiwidG90YWxWYWx1ZSI6IjE1MCQiLCJ1bml0VmFsdWUiOiIxNSQifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifV19
-*/}}
+*/-->

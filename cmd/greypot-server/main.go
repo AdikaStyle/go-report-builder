@@ -20,6 +20,7 @@ import (
 
 var templateDir string
 var address string
+var disableStudioUI bool = false
 
 type UploadTemplateRequest struct {
 	Name    string
@@ -29,6 +30,7 @@ type UploadTemplateRequest struct {
 func init() {
 	flag.StringVar(&templateDir, "templates", "./templates/", "Path to the directory with templates")
 	flag.StringVar(&address, "listen", "localhost:7665", "Listen address for server")
+	flag.BoolVar(&disableStudioUI, "disable-studio", false, "Disable the studio UI")
 }
 
 func main() {
@@ -76,53 +78,64 @@ func main() {
 
 	app := fiber.New()
 
-	templateStore := NewInmemoryTemplateRepository()
-
 	module := greypot.NewModule(
 		greypot.WithRenderTimeout(10*time.Second),
 		greypot.WithViewport(2048, 1920),
 		greypot.WithDjangoTemplateEngine(),
-		greypot.WithTemplatesRepository(templateStore),
+		greypot.WithTemplatesFromFilesystem(absTemplateDir),
 		greypot.WithPlaywrightRenderer(),
 	)
-
-	app.Post("/upload-template", func(c *fiber.Ctx) error {
-		request := new(UploadTemplateRequest)
-		err := c.BodyParser(&request)
-		if err != nil {
-			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-				"message":    "failed to parse request body",
-				"devMessage": err.Error(),
-			})
-		}
-		nom := strings.TrimSpace(request.Name)
-		err = templateStore.Add(nom, request.Content)
-
-		if err != nil {
-			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-				"message":    "failed to upload template to store",
-				"devMessage": err.Error(),
-			})
-		}
-
-		return c.JSON(fiber.Map{
-			"id":         nom,
-			"message":    "uploaded the template successfully",
-			"devMessage": "",
-		})
-	})
-
 	greypotFiber.Use(app, module)
 
-	frontendDistFS, err := fs.Sub(ui.FrontendFS, "dist")
-	if err != nil {
-		log.Fatalf("failed to read frontend assets dir got %v", err)
-	}
+	if !disableStudioUI {
+		studioTemplateStore := NewInmemoryTemplateRepository()
+		studioModule := greypot.NewModule(
+			greypot.WithRenderTimeout(10*time.Second),
+			greypot.WithViewport(2048, 1920),
+			greypot.WithDjangoTemplateEngine(),
+			greypot.WithTemplatesRepository(studioTemplateStore),
+			greypot.WithPlaywrightRenderer(),
+		)
 
-	app.Use(filesystem.New(filesystem.Config{
-		Root:   http.FS(frontendDistFS),
-		Browse: false,
-	}))
+		studioRouter := app.Group("/_studio")
+
+		greypotFiber.Use(studioRouter, studioModule)
+
+		studioRouter.Post("/upload-template", func(c *fiber.Ctx) error {
+			request := new(UploadTemplateRequest)
+			err := c.BodyParser(&request)
+			if err != nil {
+				return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+					"message":    "failed to parse request body",
+					"devMessage": err.Error(),
+				})
+			}
+			nom := strings.TrimSpace(request.Name)
+			err = studioTemplateStore.Add(nom, request.Content)
+
+			if err != nil {
+				return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+					"message":    "failed to upload template to store",
+					"devMessage": err.Error(),
+				})
+			}
+
+			return c.JSON(fiber.Map{
+				"id":         nom,
+				"message":    "uploaded the template successfully",
+				"devMessage": "",
+			})
+		})
+
+		frontendDistFS, err := fs.Sub(ui.FrontendFS, "dist")
+		if err != nil {
+			log.Fatalf("failed to read frontend assets dir got %v", err)
+		}
+		app.Use(filesystem.New(filesystem.Config{
+			Root:   http.FS(frontendDistFS),
+			Browse: false,
+		}))
+	}
 
 	err = app.Listen(address)
 	if err != nil {

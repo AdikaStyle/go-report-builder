@@ -1,40 +1,15 @@
-FROM golang:1.13-alpine AS builder
+FROM ubuntu:22.04
 
-WORKDIR /src
+WORKDIR /go/
 
-COPY ./go.mod ./go.sum ./
-RUN go mod download
+COPY . .
 
-COPY ./ ./
+RUN apt-get update -y && apt-get install -y golang nodejs npm 
 
-RUN CGO_ENABLED=0 go build \
-  -installsuffix 'static' \
-  -o /app .
+RUN cd /go/ui && npm install && npx playwright install-deps chromium
 
-FROM alpine:latest
+RUN cd ui && npm run build
 
-RUN apk update && apk add --no-cache nmap && \
-    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
-    echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
-    apk update && \
-    apk add --no-cache \
-      ca-certificates \
-      chromium \
-      harfbuzz \
-      "freetype>2.8" \
-      ttf-freefont \
-      nss
+RUN go build -o /bin/greypot-server cmd/greypot-server/*.go
 
-COPY --from=builder /app .
-
-RUN mkdir /templates
-
-ENV TEMPLATES_PATH="/templates"
-ENV RENDER_TIMEOUT="5s"
-ENV SERVER_HOST="localhost"
-ENV SERVER_PORT="8080"
-ENV GIN_MODE="release"
-
-ADD examples /templates
-
-CMD ["./app"]
+CMD [ "/bin/greypot-server" ]

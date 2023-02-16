@@ -50,12 +50,16 @@ func main() {
 
 	absTemplateDir, err := filepath.Abs(templateDir)
 	if err != nil {
-		log.Fatalf("failed to get absolute path to templates, got %v", err)
+		if !disableStudioUI {
+			log.Fatalf("failed to get absolute path to templates, got %v", err)
+		}
 	}
 
 	entries, err := os.ReadDir(absTemplateDir)
 	if err != nil {
-		log.Fatalf("failed to read template directory got %v", err)
+		if !disableStudioUI {
+			log.Fatalf("failed to read template directory got %v", err)
+		}
 	}
 
 	foundHTMLTemplates := false
@@ -70,7 +74,7 @@ func main() {
 	}
 
 	if !foundHTMLTemplates {
-		log.Fatalf("Did not find any HTML template files in %s", templateDir)
+		fmt.Printf("Did not find any HTML template files in %s\n", templateDir)
 	}
 
 	if host == "" {

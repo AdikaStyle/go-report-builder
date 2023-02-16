@@ -121,8 +121,11 @@ function App() {
           />
         </div>
       </div>
-      <a style={{ display: 'none'}} ref={downloadRef} download={downloadName}></a>
-      <Button label="PDF Preview with Test Data" onClick={uploadAndRenderPDF} />
+      
+      <div className="action-area p-3">
+        <a style={{ display: 'none'}} ref={downloadRef} download={downloadName}></a>
+        <Button label="PDF Preview with Test Data" onClick={uploadAndRenderPDF} />
+      </div>
 
       <footer>
         <p>👋 Mulibwanji</p>

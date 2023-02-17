@@ -15,7 +15,6 @@ function App() {
   const [downloadName, setDownloadName] = useState('test.pdf')
 
   let editorDidMount = (editor: any, monaco: any) => {
-    console.log("Editor mounted")
     editor.focus()
   }
 
@@ -129,7 +128,7 @@ function App() {
 
       <footer>
         <p>👋 Mulibwanji</p>
-        <a href="https://nndi.cloud/oss/greypot">greypot</a> is brought to you from Malawi by NNDI. 
+        <a href="https://nndi.cloud/oss/greypot">Greypot Studio</a> is an open-source project brought to you from Malawi by NNDI. 
       </footer>
     </div>
   )

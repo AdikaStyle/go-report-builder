@@ -5,14 +5,6 @@ export const ExampleHTML = `
 <html>
 <head>
 	<style>
-		body {
-			font-family: 'Ariel', serif;
-			font-size: 10pt;
-			direction: ltr;
-			width: 120mm;
-			height: 150mm;
-		}
-
 		.invoice-container {
 			padding: 10px;
 			display: flex;
@@ -64,6 +56,7 @@ export const ExampleHTML = `
 			</tr>
 			{% endfor %}
 		</tbody>
+		</table>
 </div>
 
 </body>

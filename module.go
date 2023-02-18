@@ -1,7 +1,6 @@
 package greypot
 
 import (
-	"fmt"
 	"io/fs"
 	"time"
 
@@ -9,7 +8,6 @@ import (
 	"github.com/nndi-oss/greypot/service"
 	"github.com/nndi-oss/greypot/template/engine"
 	"github.com/nndi-oss/greypot/template/repo"
-	"github.com/playwright-community/playwright-go"
 )
 
 type Module struct {
@@ -27,11 +25,6 @@ type Module struct {
 }
 
 func NewPlaywrightModule(renderTimeout time.Duration, repo repo.TemplateRepository) *Module {
-	err := playwright.Install()
-	if err != nil {
-		panic(fmt.Errorf("could not install playwright dependencies (Chromium): %w", err))
-	}
-
 	return NewModule(
 		WithRenderTimeout(renderTimeout),
 		WithViewport(2048, 1920),

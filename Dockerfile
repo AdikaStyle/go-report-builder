@@ -84,8 +84,9 @@ COPY . .
 RUN cd /greypot/ui \
     && npm install \
     && npm run build \
+    && rm -rf /greypot/ui/node_modules \
     && cd /greypot/cmd/greypot-server \
-    && go build -buildvcs=false -o /bin/greypot-server 
+    && go build -buildvcs=false -o /bin/greypot-server
 
 
 ENV PORT 7665

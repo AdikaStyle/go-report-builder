@@ -18,6 +18,7 @@ import (
 	"github.com/nndi-oss/greypot"
 	greypotFiber "github.com/nndi-oss/greypot/http/fiber"
 	"github.com/nndi-oss/greypot/ui"
+	"github.com/playwright-community/playwright-go"
 )
 
 var templateDir string
@@ -104,7 +105,9 @@ func main() {
 		greypot.WithViewport(2048, 1920),
 		greypot.WithDjangoTemplateEngine(),
 		greypot.WithTemplatesFromFilesystem(absTemplateDir),
-		greypot.WithPlaywrightRenderer(),
+		greypot.WithPlaywrightRenderer(&playwright.RunOptions{
+			Browsers: []string{"chromium"},
+		}),
 	)
 	greypotFiber.Use(app, module)
 
@@ -115,7 +118,9 @@ func main() {
 			greypot.WithViewport(2048, 1920),
 			greypot.WithDjangoTemplateEngine(),
 			greypot.WithTemplatesRepository(studioTemplateStore),
-			greypot.WithPlaywrightRenderer(),
+			greypot.WithPlaywrightRenderer(&playwright.RunOptions{
+				Browsers: []string{"chromium"},
+			}),
 		)
 
 		studioRouter := app.Group("/_studio")

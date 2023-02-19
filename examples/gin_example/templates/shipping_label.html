@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body {
+			font-family: 'Ariel', serif;
+			font-size: 14pt;
+			direction: ltr;
+			width: 150mm;
+			height: 100mm;
+		}
+
+		.label-container {
+			padding: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		.label-top {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			align-items: center;
+		}
+
+		.label-bottom {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			align-items: center;
+		}
+
+		.address-box {
+			border: 3px solid black;
+			border-radius: 10px;
+			width: 8cm;
+			padding: 10px;
+		}
+	</style>
+
+	<script src="https://cdn.jsdelivr.net/jsbarcode/3.5.1/JsBarcode.all.min.js"></script>
+	<script type="text/javascript">
+        setTimeout(() => {
+            JsBarcode("#top-barcode", "{{ .Values.barcode }}", {
+                height: 60,
+                width: 3,
+                fontSize: 16
+            });
+        }, 1)
+	</script>
+	<title>Example - Shipping Label</title>
+</head>
+<body>
+
+<div class="label-container" id="printable">
+	<div class="label-top">
+        {{ .Values.title }}
+		<div style="height: 0.4cm"></div>
+		<svg id="top-barcode"></svg>
+	</div>
+	<div style="height: 1cm"></div>
+	<div class="label-bottom">
+		<div class="address-box">
+			<b>Recipient</b>
+			<br>
+            {{ .Values.customerName }}
+			<br>
+            {{ .Values.customerAddress }}
+			<br>
+            {{ .Values.customerCity }}
+			<br>
+            {{ .Values.customerPhone }}
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+
+{{/*
+Example JSON body:
+{
+  "barcode": "SH200992KKS9922",
+  "customerAddress": "Zack Street BC99Z8",
+  "customerCity": "Washington DC",
+  "customerName": "John Doe",
+  "customerPhone": "(+1) 555-444-333",
+  "title": "My Shipping Label"
+}
+
+Or just try:
+http://localhost:8080/reports/preview/shipping_label?d=eyJiYXJjb2RlIjoiU0gyMDA5OTJLS1M5OTIyIiwidGl0bGUiOiJNeSBTaGlwcGluZyBMYWJlbCIsImN1c3RvbWVyTmFtZSI6IkpvaG4gRG9lIiwiY3VzdG9tZXJDaXR5IjoiV2FzaGluZ3RvbiBEQyIsImN1c3RvbWVyQWRkcmVzcyI6IlphY2sgU3RyZWV0IEJDOTlaOCIsImN1c3RvbWVyUGhvbmUiOiIoKzEpIDU1NS00NDQtMzMzIn0=
+*/}}

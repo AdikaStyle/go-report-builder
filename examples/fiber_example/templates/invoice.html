@@ -36,7 +36,7 @@
 <body>
 
 <div class="invoice-container" id="printable">
-	<h2 style="text-align: center">Invoice # <u>{{ invoiceId }}</u></h2>
+	<h2 style="text-align: center">Invoice # <u>{{ data.invoiceId }}</u></h2>
 	<table style="width:100%">
 		<thead>
 		<tr>
@@ -50,7 +50,7 @@
 		</thead>
 
 		<tbody>
-			{% for l in lineItems %}
+			{% for l in data.lineItems %}
 			<tr>
 				<td>{{ l.sku }}</td>
 				<td>{{ l.name }}</td>
@@ -61,35 +61,8 @@
 			</tr>
 			{% endfor %}
 		</tbody>
+		</table>
 </div>
 
 </body>
 </html>
-<!--
-/*
-Example JSON body:
-{
-  "invoiceId": "SH200992",
-  "lineItems": [
-    {
-      "name": "Large box of gold",
-      "netWeight": "0.1 KG",
-      "quantity": 3,
-      "sku": "A00005454",
-      "totalValue": "30$",
-      "unitValue": "10$"
-    },
-    {
-      "name": "Fresh Air",
-      "netWeight": "0.3 KG",
-      "quantity": 10,
-      "sku": "A0000522354",
-      "totalValue": "150$",
-      "unitValue": "15$"
-    }
-  ]
-}
-
-Or just try:
-http://localhost:8080/reports/preview/invoice?d=eyJpbnZvaWNlSWQiOiJTSDIwMDk5MiIsImxpbmVJdGVtcyI6W3sibmFtZSI6IkxhcmdlIGJveCBvZiBnb2xkIiwibmV0V2VpZ2h0IjoiMC4xIEtHIiwicXVhbnRpdHkiOjMsInNrdSI6IkEwMDAwNTQ1NCIsInRvdGFsVmFsdWUiOiIzMCQiLCJ1bml0VmFsdWUiOiIxMCQifSx7Im5hbWUiOiJGcmVzaCBBaXIiLCJuZXRXZWlnaHQiOiIwLjMgS0ciLCJxdWFudGl0eSI6MTAsInNrdSI6IkEwMDAwNTIyMzU0IiwidG90YWxWYWx1ZSI6IjE1MCQiLCJ1bml0VmFsdWUiOiIxNSQifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifSx7Im5hbWUiOiItIiwibmV0V2VpZ2h0IjoiIiwicXVhbnRpdHkiOiIiLCJza3UiOiIiLCJ0b3RhbFZhbHVlIjoiIiwidW5pdFZhbHVlIjoiIn0seyJuYW1lIjoiLSIsIm5ldFdlaWdodCI6IiIsInF1YW50aXR5IjoiIiwic2t1IjoiIiwidG90YWxWYWx1ZSI6IiIsInVuaXRWYWx1ZSI6IiJ9LHsibmFtZSI6Ii0iLCJuZXRXZWlnaHQiOiIiLCJxdWFudGl0eSI6IiIsInNrdSI6IiIsInRvdGFsVmFsdWUiOiIiLCJ1bml0VmFsdWUiOiIifV19
-*/-->
